@@ -1,0 +1,6 @@
+@ApiShield.Api_HostAddress = http://localhost:5084
+
+GET {{ApiShield.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
