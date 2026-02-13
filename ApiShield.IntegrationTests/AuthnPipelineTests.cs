@@ -1,5 +1,4 @@
-﻿using ApiShield.Api.Auth;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Text.Json;
 

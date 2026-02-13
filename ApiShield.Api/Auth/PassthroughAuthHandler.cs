@@ -12,6 +12,7 @@ public sealed class PassthroughAuthHandler : AuthenticationHandler<Authenticatio
         UrlEncoder encoder)
         : base(options, logger, encoder) { }
 
+    // when FW wants to run authentication for the specific scheme. 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         // user setup up from ApiKeyAuthMiddleware.

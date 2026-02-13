@@ -1,6 +1,5 @@
 ﻿using ApiShield.Api.Security.AuthConstants;
 using ApiShield.Core;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace ApiShield.Api.Auth;
 

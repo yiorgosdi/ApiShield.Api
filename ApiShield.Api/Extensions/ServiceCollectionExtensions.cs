@@ -2,9 +2,6 @@
 using ApiShield.Api.Security.AuthConstants;
 using ApiShield.Core;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiShield.Api.Extensions;
 
