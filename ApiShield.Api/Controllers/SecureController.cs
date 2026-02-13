@@ -1,5 +1,4 @@
-﻿using ApiShield.Core;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiShield.Api.Controllers;
