@@ -53,6 +53,6 @@ public class AuthnPipelineTests : IClassFixture<WebApplicationFactory<Program>>
         var message = json.RootElement.GetProperty("message").GetString();
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
-        Assert.Equal("pong", message);    
+        Assert.Equal(expectedContent, message);    
     }
 }

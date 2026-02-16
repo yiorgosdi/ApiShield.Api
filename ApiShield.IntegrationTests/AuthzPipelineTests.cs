@@ -39,6 +39,6 @@ public class AuthzPipelineTests : IClassFixture<WebApplicationFactory<Program>>
         var body = await res.Content.ReadAsStringAsync();
         using var json = JsonDocument.Parse(body);
         var message = json.RootElement.GetProperty("message").GetString();
-        Assert.Equal("admin pong", message);
+        Assert.Equal(expectedContent, message);
     }
 }
