@@ -30,7 +30,7 @@ jobs:
         run: dotnet test ./ApiShield.TestingLab.sln --configuration Release --no-build
   
       - name: dotnet publish
-        run: dotnet publish ./ApiShield.Api/ApiShield.Api.csproj -c Release -o publish --no-build
+        run: dotnet publish ./ApiShield.Api/ApiShield.Api.csproj -c Release -o published --no-build
 
       - name: Create deployment package
         run: |
@@ -73,5 +73,6 @@ jobs:
           package: published/app.zip
 
           
+
 
 
