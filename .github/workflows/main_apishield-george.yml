@@ -30,13 +30,18 @@ jobs:
         run: dotnet test ./ApiShield.TestingLab.sln --configuration Release --no-build
   
       - name: dotnet publish
-        run: dotnet publish ./ApiShield.Api/ApiShield.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./ApiShield.Api/ApiShield.Api.csproj -c Release -o publish --no-build
 
+      - name: Create deployment package
+        run: |
+          cd publish
+          zip -r ../app.zip .
+    
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          name: app-package
+          path: published/app.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -49,7 +54,8 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
+          name: app-package
+          path: published
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -64,6 +70,7 @@ jobs:
         with:
           app-name: 'apishield-george'
           slot-name: 'Production'
-          package: .
+          package: published/app.zip
 
           
+
