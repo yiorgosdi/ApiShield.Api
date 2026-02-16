@@ -40,8 +40,8 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: app-package
-          path: published/app.zip
+          name: published-app
+          path: published
 
   deploy:
     runs-on: ubuntu-latest
@@ -54,7 +54,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: app-package
+          name: published-app
           path: published
       
       - name: Login to Azure
@@ -70,9 +70,10 @@ jobs:
         with:
           app-name: 'apishield-george'
           slot-name: 'Production'
-          package: published/app.zip
+          package: published
 
           
+
 
 
 
