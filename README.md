@@ -1,3 +1,19 @@
+\# ApiShield
+
+<img alt="CI" src="https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/ci.yml/badge.svg" />
+
+
+
+!\[CI](https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/ci.yml/badge.svg)
+
+
+
+Live: https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net
+
+
+
+
+
 1. What it is
    ApiShield.TestingLab is a .NET API security lab that demonstrates API-key AuthN, role-based AuthZ, and a layered testing strategy (unit + integration) with clean composition.
 2. Endpoints
@@ -19,13 +35,11 @@
    Add policy-based authorization + more observability
 7. Test Matrix:
 
-&nbsp;	/secure/ping missing → 401
+ 	/secure/ping missing → 401
 
-&nbsp;	/secure/ping not present → 401
+ 	/secure/ping not present → 401
 
-&nbsp;	/secure/admin basic → 403
+ 	/secure/admin basic → 403
 
-&nbsp;	/secure/admin admin → 200
-
-
+ 	/secure/admin admin → 200
 
