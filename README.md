@@ -2,10 +2,7 @@
 
 [![Build & Deploy](https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/main_apishield-george.yml/badge.svg)](https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/main_apishield-george.yml)
 
-Live API:  
-https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net
-
-Swagger UI:  
+Azure Live - Swagger UI:  
 https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net/swagger
 
 ---
