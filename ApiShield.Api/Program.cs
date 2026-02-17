@@ -37,11 +37,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Serve static files (wwwroot/index.html)
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
-// Minimal exception-to-HTTP mapping (for 401 instead of 500)
+// Minimal exception-to-HTTP mapping (for 401 instead of 500). 
 app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
@@ -69,6 +65,10 @@ app.UseExceptionHandler(errorApp =>
         await context.Response.WriteAsync("Internal Server Error");
     });
 });
+
+// Serve static files (wwwroot/index.html)
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseMiddleware<ApiKeyAuthMiddleware>(); // sets HttpContext.User for /secure

@@ -7,7 +7,7 @@ https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net/swagge
 
 ---
 
-Demo API Keys (Sample)
+Demo API Keys (Sample) - These are sample demo keys for educational purposes only.
 
 Admin  
 `1234567890abcdef1234567890abcdef`
