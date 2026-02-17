@@ -74,11 +74,8 @@ app.UseAuthentication();
 app.UseMiddleware<ApiKeyAuthMiddleware>(); // sets HttpContext.User for /secure
 app.UseAuthorization();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
 app.Run();
