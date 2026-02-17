@@ -1,18 +1,17 @@
-\# ApiShield
+# ApiShield
+Live: https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net/swagger/index.html
+Swagger: http://localhost:5084/swagger/index.html 
+Sample keys (demo): 
+	Admin 1234567890abcdef1234567890abcdef 
+	Basic bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb 
+	NotPresentKey 1234567890abcdef1234567890abcabc
+
 
 <img alt="CI" src="https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/ci.yml/badge.svg" />
 
-
-
 !\[CI](https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/ci.yml/badge.svg)
 
-
-
 Live: https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net
-
-
-
-
 
 1. What it is
    ApiShield.TestingLab is a .NET API security lab that demonstrates API-key AuthN, role-based AuthZ, and a layered testing strategy (unit + integration) with clean composition.

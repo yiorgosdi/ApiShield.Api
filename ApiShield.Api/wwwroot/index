@@ -1,49 +1,79 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ApiShield</title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:#0b0f19;color:#e8eefc}
-    .wrap{max-width:980px;margin:0 auto;padding:52px 20px}
-    .card{background:#111a2e;border:1px solid #1e2a4a;border-radius:18px;padding:30px}
-    h1{margin:0 0 10px;font-size:40px;letter-spacing:.2px}
-    p{margin:10px 0 0;line-height:1.6;color:#b8c6e6;font-size:16px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:20px}
-    a.btn{display:block;text-decoration:none;color:#e8eefc;background:#172446;border:1px solid #26355f;padding:14px 16px;border-radius:12px}
-    a.btn:hover{background:#1b2b55}
-    code{background:#0b1222;border:1px solid #1e2a4a;padding:2px 7px;border-radius:8px}
-    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#0b1222;border:1px solid #1e2a4a;color:#9fb0d6;font-size:13px}
-    .small{margin-top:18px;font-size:14px;color:#9fb0d6}
-  </style>
+    <meta charset="utf-8" />
+    <title>ApiShield.TestingLab</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            text-align: center;
+            padding: 60px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        code {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            background: #1e293b;
+            border-radius: 6px;
+            width: fit-content;
+            font-size: 14px;
+        }
+
+        .copy-btn {
+            margin-top: 5px;
+            background: #16a34a;
+        }
+
+        .copy-btn:hover {
+            background: #15803d;
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>ApiShield</h1>
-      <p>ASP.NET Core security lab deployed to Azure. Demonstrates <b>AuthN/AuthZ</b> (API keys, roles) and a production-style test suite (unit + integration).</p>
 
-      <div class="row">
-        <img alt="CI"
-        src="https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/ci.yml/badge.svg" />
-        <span class="badge">401 = AuthN fail</span>
-        <span class="badge">403 = AuthZ fail</span>
-        <span class="badge">Azure App Service</span>
-      </div>
+    <h1>ApiShield.TestingLab</h1>
+    <p>ASP.NET Core API with API-key AuthN/AuthZ and full test coverage</p>
 
-      <div class="grid">
-        <a class="btn" href="/swagger">Open Swagger</a>
-        <a class="btn" href="/secure/ping">/secure/ping (needs X-API-Key)</a>
-        <a class="btn" href="/secure/admin">/secure/admin (admin only)</a>
-        <a class="btn" href="https://github.com/yiorgosdi/ApiShield.Api">GitHub Repository</a>
-      </div>
+    <a class="btn" href="/swagger" target="_blank">Open Swagger</a>
 
-      <p class="small">
-        Header: <code>X-API-Key</code>. Demo keys are used for documentation/interview purposes.
-      </p>
-    </div>
-  </div>
+    <h3>Demo Keys</h3>
+
+    <code id="adminKey">1234567890abcdef1234567890abcdef</code>
+    <button class="btn copy-btn" onclick="copyKey('adminKey')">Copy Admin Key</button>
+
+    <code id="basicKey">bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</code>
+    <button class="btn copy-btn" onclick="copyKey('basicKey')">Copy Basic Key</button>
+
+    <script>
+        function copyKey(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text);
+            alert("Copied to clipboard");
+        }
+    </script>
+
 </body>
 </html>
