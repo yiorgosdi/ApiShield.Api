@@ -2,6 +2,7 @@
 using ApiShield.Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using ApiShield.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,12 +71,27 @@ app.UseExceptionHandler(errorApp =>
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.UseMiddleware<CorrelationIdMiddleware>();
+
 app.UseAuthentication();
 app.UseMiddleware<ApiKeyAuthMiddleware>(); // sets HttpContext.User for /secure
 app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.MapGet("/health", () => Results.Ok("ok"));
+
+app.MapGet("/info", () => Results.Json(new
+{
+    name = "ApiShield",
+    env = app.Environment.EnvironmentName,
+    auth = new { header = "X-API-Key", schemes = new[] { "ApiKey" } },
+    endpoints = new[] { "/secure/ping", "/secure/admin" },
+    docs = "/swagger",
+    repo = "https://github.com/yiorgosdi/ApiShield.Api",
+    live = "https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net"
+}));
 
 app.MapControllers();
 app.Run();

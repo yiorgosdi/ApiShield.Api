@@ -9,7 +9,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApiKeyAuth(this IServiceCollection services, IConfiguration config)
     {
-        // Options
+        // Options, reading from configuration (not hardcoded). 
         services.Configure<ApiKeyAuthOptions>(config.GetSection("ApiKeyAuth"));
 
         // AuthN/AuthZ

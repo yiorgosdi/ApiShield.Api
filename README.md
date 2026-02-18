@@ -10,10 +10,10 @@ https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net/swagge
 Demo API Keys (Sample) - These are sample demo keys for educational purposes only.
 
 Admin  
-`1234567890abcdef1234567890abcdef`
+"1234567890abcdef1234567890abcdef"
 
 Basic  
-`bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb`
+"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
 
 ---
 
@@ -26,13 +26,14 @@ ApiShield.TestingLab is an ASP.NET Core API security lab demonstrating:
 - Clean composition root (SOLID)
 - Full unit & integration test coverage
 - CI/CD deployment to Azure
+- Configuration-driven security (no hardcoded credentials)
 
 ---
 
 2. Endpoints
 
-- `GET /secure/ping` → requires valid API key  
-- `GET /secure/admin` → requires valid API key + admin role  
+- `GET /secure/ping`→ requires valid API key  
+- `ApiKeyAuth:Keys`→ requires valid API key + admin role  
 
 ---
 
@@ -48,3 +49,13 @@ ApiShield.TestingLab is an ASP.NET Core API security lab demonstrating:
 ```bash
 dotnet test
 dotnet run --project ApiShield.Api
+
+---
+
+5. Testing Strategy
+
+- Unit Tests: Validate core rules in isolation (ApiKeyValidator) using mocks for IApiKeyStore.
+- Integration Tests: Validate the full HTTP security pipeline end-to-end (AuthN/AuthZ) using WebApplicationFactory.
+  Integration tests override "ApiKeyAuth:Keys" via in-memory configuration to remain deterministic and environment-independent.
+
+--- 

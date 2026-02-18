@@ -4,11 +4,11 @@ using System.Text.Json;
 
 namespace ApiShield.IntegrationTests;
 
-public class AuthzPipelineTests : IClassFixture<WebApplicationFactory<Program>>
+public class AuthzPipelineTests : IClassFixture<ApiShieldWebApplicationFactory>
 {
     private readonly HttpClient _client;
     
-    public AuthzPipelineTests(WebApplicationFactory<Program> factory)
+    public AuthzPipelineTests(ApiShieldWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
     }
