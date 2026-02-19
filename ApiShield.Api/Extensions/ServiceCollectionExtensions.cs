@@ -20,12 +20,10 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization();
 
         // Core + stores
-       //shmera feyegi services.AddScoped<ApiKeyValidator>();//shmera feygei 
         services.AddSingleton<IApiKeyStore, InMemoryApiKeyStore>();
 
         // Identity + middleware
         services.AddSingleton<IApiKeyIdentityResolver, ApiKeyIdentityResolver>();
-        //shmera feygei  services.AddTransient<ApiKeyAuthMiddleware>();
 
         return services;
     }
