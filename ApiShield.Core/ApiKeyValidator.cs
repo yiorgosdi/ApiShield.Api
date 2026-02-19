@@ -1,5 +1,6 @@
 ﻿namespace ApiShield.Core;
 
+// ApiKeyValidator on Core stays ONLY for testing, no use in runtime. 
 public sealed class ApiKeyValidator
 {
     private readonly IApiKeyStore _store;

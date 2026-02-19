@@ -14,19 +14,18 @@ public static class ServiceCollectionExtensions
 
         // AuthN/AuthZ
         services
-        .AddAuthentication(AuthSchemes.ApiKey)
-        .AddScheme<AuthenticationSchemeOptions, PassthroughAuthHandler>(
-            AuthSchemes.ApiKey, _ => { });
+          .AddAuthentication(AuthSchemes.ApiKey)
+          .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(AuthSchemes.ApiKey, _ => { });
 
         services.AddAuthorization();
 
         // Core + stores
-        services.AddScoped<ApiKeyValidator>();
+       //shmera feyegi services.AddScoped<ApiKeyValidator>();//shmera feygei 
         services.AddSingleton<IApiKeyStore, InMemoryApiKeyStore>();
 
         // Identity + middleware
         services.AddSingleton<IApiKeyIdentityResolver, ApiKeyIdentityResolver>();
-        services.AddTransient<ApiKeyAuthMiddleware>();
+        //shmera feygei  services.AddTransient<ApiKeyAuthMiddleware>();
 
         return services;
     }
