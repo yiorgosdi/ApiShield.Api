@@ -48,7 +48,7 @@ ApiShield is an ASP.NET Core API security lab demonstrating:
 ```bash
 dotnet test
 dotnet run --project ApiShield.Api
-
+```
 ---
 
 5. Testing Strategy
