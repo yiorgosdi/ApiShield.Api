@@ -18,13 +18,12 @@ public static class ServiceCollectionExtensions
           .AddAuthentication(AuthSchemes.ApiKey)
           .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(AuthSchemes.ApiKey, _ => { });
 
-        services.AddAuthorization(options =>
-        {
-            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        services.AddAuthorization(//options =>{
+            /*options.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .AddAuthenticationSchemes(AuthSchemes.ApiKey)
                 .RequireAuthenticatedUser()
-                .Build();
-        });
+                .Build();} */
+        ); 
          
         // Core + stores
         services.AddSingleton<IApiKeyStore, InMemoryApiKeyStore>();
