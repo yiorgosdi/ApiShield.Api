@@ -2,6 +2,7 @@
 using ApiShield.Api.Security.AuthConstants;
 using ApiShield.Core;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiShield.Api.Extensions;
 
@@ -17,8 +18,14 @@ public static class ServiceCollectionExtensions
           .AddAuthentication(AuthSchemes.ApiKey)
           .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(AuthSchemes.ApiKey, _ => { });
 
-        services.AddAuthorization();
-
+        services.AddAuthorization(options =>
+        {
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(AuthSchemes.ApiKey)
+                .RequireAuthenticatedUser()
+                .Build();
+        });
+         
         // Core + stores
         services.AddSingleton<IApiKeyStore, InMemoryApiKeyStore>();
 

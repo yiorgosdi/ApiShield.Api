@@ -63,7 +63,7 @@ app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapGet("/health", () => Results.Ok("ok"));
+app.MapGet("/health", () => Results.Ok("ok")).AllowAnonymous(); 
 
 app.MapGet("/info", () => Results.Json(new
 {
@@ -74,7 +74,7 @@ app.MapGet("/info", () => Results.Json(new
     docs = "/swagger",
     repo = "https://github.com/yiorgosdi/ApiShield.Api",
     live = "https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net"
-}));
+})).AllowAnonymous();
 
 app.MapControllers();
 app.Run();
