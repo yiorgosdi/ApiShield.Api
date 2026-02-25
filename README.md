@@ -1,88 +1,101 @@
-# ApiShield
+ApiShield
 
-> This project is part of an ongoing deep dive into API security, testing methodologies and Azure cloud deployment practices.
+A production-oriented ASP.NET Core API security lab focused on authentication, authorization, testing and Azure deployment practices.
 
-
-[![Build & Deploy](https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/main_apishield-george.yml/badge.svg)](https://github.com/yiorgosdi/ApiShield.Api/actions/workflows/main_apishield-george.yml)
-
-Azure Live - Swagger UI:  
+🌐 Live Swagger (Azure App Service)
 https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net/swagger
 
----
+🚀 Purpose
 
-Demo API Keys (for demonstration only) - See configuration in appsettings.Development.json.
-
----
-
-1. What it is
-
-ApiShield is an ASP.NET Core API security lab demonstrating:
-
-- API Key validation via custom authentication scheme
+- ApiShield demonstrates how to build and deploy a secure ASP.NET Core API with:
+- Custom API Key authentication scheme
+- Role-based authorization policies
 - OIDC / OAuth2 integration (Keycloak)
-- Token validation without runtime calls to the Identity Provider
-- Clean layering (Domain / Application / Infrastructure)
-- Unit & Integration Testing (WebApplicationFactory)
-- TDD-oriented development
-- Docker-based local orchestration
-- Deployed to Azure App Service (Live)
+- Token validation without runtime calls to Identity Provider
+- Clean architecture layering (Domain / Application / Infrastructure)
+- Unit & Integration testing
+- GitHub Actions CI/CD pipeline
+- Azure App Service deployment
 
----
+# Health check
+curl https://<your-url>/health
 
-2. Endpoints
+# Unauthorized (no key)
+curl https://<your-url>/secure/ping
+# → 401
 
-- `GET /secure/ping`→ requires valid API key  
-- `GET /secure/admin`→ requires valid API key + admin role  
+# Authorized
+curl https://<your-url>/secure/ping -H "X-API-Key: <valid-key>"
+# → 200
 
----
+# Forbidden (non-admin key)
+curl https://<your-url>/secure/admin -H "X-API-Key: <basic-key>"
+# → 403
 
-3. Status Codes (AuthN vs AuthZ)
+# Admin access
+curl https://<your-url>/secure/admin -H "X-API-Key: <admin-key>"
+# → 200
 
-- 401 Unauthorized → missing/invalid API key  
-- 403 Forbidden → valid key, insufficient role  
+Demo API keys are available in appsettings.Development.json.
 
----
 
-4. How to run locally
+🔐 AuthN vs AuthZ Behavior
+Scenario	Result
+Missing or invalid API key	401 Unauthorized
+Valid key, insufficient role	403 Forbidden
+Valid key, correct role	200 OK
 
-```bash
+This clearly separates authentication from authorization in the request pipeline.
+
+
+🧪 Testing Strategy
+- Unit tests for core validation logic
+- Integration tests using WebApplicationFactory
+- Full authentication pipeline coverage
+- Explicit 401 vs 403 verification
+- Arrange–Act–Assert structure
+- Run locally:
 dotnet test
 dotnet run --project ApiShield.Api
-```
----
 
-5. Testing Strategy
 
-- Unit tests for validation components
-- Integration tests covering full authentication pipeline
-- Arrange–Act–Assert pattern
-- Focus on realistic security flow scenarios
+🏗 Architecture Overview
+Client
+  ↓
+Middleware Pipeline
+  ↓
+Custom ApiKey AuthenticationHandler
+  ↓
+ClaimsPrincipal
+  ↓
+Authorization Policies (Roles)
+  ↓
+Controller Endpoints
 
---- 
-
-6. Architecture Focus
-
-- Authentication vs Authorization separation
-- Custom ApiKey scheme via AuthenticationHandler
-- Token validation through middleware pipeline
-- Production-oriented configuration handling
-
----
-
-7. Cloud Deployment
-
-- Azure App Service (Linux)
-- GitHub Actions CI/CD pipeline
-- HTTPS enforced
+Design focus:
+- Clear AuthN / AuthZ separation
+- Policy-based role enforcement
 - Environment-based configuration
+- Production-ready middleware ordering
 
----  
 
-8. Roadmap
+☁️ Cloud & DevOps
+- Azure App Service (Linux)
+- GitHub Actions CI/CD
+- HTTPS enforced
+- OIDC-based deployment authentication
+- Environment-specific configuration handling
 
+
+🔎 Security Notes
+- Demo API keys are for testing purposes only.
+- No secrets are committed to the repository.
+- Production configuration should use secure secret storage (e.g., Azure Key Vault).
+
+
+🛣 Roadmap
 - Redis-backed caching
-- Rate limiting strategies
-- Observability (Azure Application Insights)
-- Resilience patterns
-
---- 
+- Rate limiting middleware
+- Structured logging & correlation IDs
+- Azure Application Insights integration
+- Resilience patterns (retry / idempotency) 
