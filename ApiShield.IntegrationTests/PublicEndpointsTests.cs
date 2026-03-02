@@ -18,4 +18,15 @@ public sealed class SecurityDefaultsTests : IClassFixture<ApiShieldWebApplicatio
 
         Assert.Equal(HttpStatusCode.Unauthorized, res.StatusCode);
     }
+
+    [Fact]
+    public async Task Admin_endpoint_with_basic_key_is_forbidden()
+    {
+        var req = new HttpRequestMessage(HttpMethod.Get, "/secure/admin");
+        req.Headers.Add(TestKeys.HeaderName, TestKeys.BasicKey);
+
+        var res = await _client.SendAsync(req);
+
+        Assert.Equal(HttpStatusCode.Forbidden, res.StatusCode);
+    }
 }

@@ -13,7 +13,7 @@ public class SecureController : ControllerBase
     public IActionResult Ping()
         => Ok(new { message = "pong" });
 
-    [Authorize(AuthenticationSchemes = AuthSchemes.ApiKey, Roles = AuthRoles.Admin)]
+    [Authorize(AuthenticationSchemes = AuthSchemes.ApiKey, Policy = AuthPolicies.AdminOnly)]
     [HttpGet("admin")]
     public IActionResult Admin()
         => Ok(new { message = "admin pong" });
