@@ -20,12 +20,6 @@ public static class ServiceCollectionExtensions
 
         services.AddAuthorization(options =>
         {
-            // secure by-default (fallback) 
-            options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .AddAuthenticationSchemes(AuthSchemes.ApiKey)
-            .RequireAuthenticatedUser()
-            .Build();
-
             // Named policy for admin endpoint
             options.AddPolicy(AuthPolicies.AdminOnly, policy =>
             policy.RequireRole(AuthRoles.Admin));
