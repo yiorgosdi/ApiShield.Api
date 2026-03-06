@@ -1,8 +1,12 @@
-﻿using ApiShield.Api.Auth;
-using ApiShield.Api.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
+﻿using ApiShield.Api.Extensions;
+using ApiShield.Api.Features.Usage;
+using ApiShield.Api.Infrastructure.Persistence;
+using ApiShield.Api.Infrastructure.Usage;
 using ApiShield.Api.Middleware;
+using ApiShield.Core.Usage;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,47 +40,73 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddDbContext<ApiShieldDbContext>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Sql")));
+
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddScoped<IApiKeyUsageService, ApiKeyUsageService>();
+
+builder.Services.AddRateLimiter(o =>
+{
+    o.AddFixedWindowLimiter("usage", opt =>
+    {
+        opt.PermitLimit = 60;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueLimit = 0;
+    });
+});
+
+builder.Services.AddDbContext<ApiShieldDbContext>(options =>
+{
+    options.UseSqlServer("Server=localhost;Database=ApiShield;Trusted_Connection=True;TrustServerCertificate=True;");
+    options.EnableSensitiveDataLogging();
+    options.LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 var app = builder.Build();
 
-// Minimal exception-to-HTTP mapping (for 401 instead of 500). 
 app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
     {
-        var feature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
-        var ex = feature?.Error;
-        
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         await context.Response.WriteAsync("Internal Server Error");
     });
 });
 
-// Serve static files (wwwroot/index.html)
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseMiddleware<CorrelationIdMiddleware>();
 
+app.UseWhen(
+    ctx => !ctx.Request.Path.StartsWithSegments("/swagger"),
+    secured =>
+    {
+        secured.UseAuthentication();
+        secured.UseAuthorization();
+    });
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRateLimiter();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapGet("/health", () => Results.Ok("ok")).AllowAnonymous(); 
+app.MapGet("/health", () => Results.Ok("ok")).AllowAnonymous();
+app.MapGet("/info", () => Results.Json(new { version = "1.0.0", name = "ApiShield" })).AllowAnonymous();
 
-app.MapGet("/info", () => Results.Json(new
+app.MapGet("/health/db", async (ApiShieldDbContext db, CancellationToken ct) =>
 {
-    name = "ApiShield",
-    env = app.Environment.EnvironmentName,
-    auth = new { header = "X-API-Key", schemes = new[] { "ApiKey" } },
-    endpoints = new[] { "/secure/ping", "/secure/admin" },
-    docs = "/swagger",
-    repo = "https://github.com/yiorgosdi/ApiShield.Api",
-    live = "https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net"
-})).AllowAnonymous();
+    var canConnect = await db.Database.CanConnectAsync(ct);
+    return Results.Ok(new { canConnect });
+});
 
 app.MapControllers();
-app.Run();
+app.MapUsageEndpoints();      
+
+app.Run(); 
 
 public partial class Program { }

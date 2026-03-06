@@ -2,7 +2,6 @@
 using ApiShield.Api.Security.AuthConstants;
 using ApiShield.Core;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ApiShield.Api.Extensions;
 
@@ -20,17 +19,10 @@ public static class ServiceCollectionExtensions
 
         services.AddAuthorization(options =>
         {
-            // secure by-default (fallback) 
-            options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .AddAuthenticationSchemes(AuthSchemes.ApiKey)
-            .RequireAuthenticatedUser()
-            .Build();
-
-            // Named policy for admin endpoint
             options.AddPolicy(AuthPolicies.AdminOnly, policy =>
-            policy.RequireRole(AuthRoles.Admin));
-        }); 
-         
+                policy.RequireRole(AuthRoles.Admin));
+        });
+
         // Core + stores
         services.AddSingleton<IApiKeyStore, InMemoryApiKeyStore>();
 
