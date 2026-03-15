@@ -75,10 +75,11 @@ WHERE KeyId = @KeyId AND UsageDate = @UsageDate;
 
     public async Task<UsageTodayResponse> GetTodayAsync(string keyId, DateOnly dt, CancellationToken ct)
     {
-        var row = await _db.ApiKeyDailyUsage
+        var count = await _db.ApiKeyDailyUsage
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.KeyId == keyId && x.UsageDate == dt, ct);
+            .Where(x => x.KeyId == keyId && x.UsageDate == dt)
+            .SumAsync(x => (int?)x.Count, ct) ?? 0;
 
-        return new UsageTodayResponse(dt, row?.Count ?? 0);
+        return new UsageTodayResponse(dt, count);
     }
 }

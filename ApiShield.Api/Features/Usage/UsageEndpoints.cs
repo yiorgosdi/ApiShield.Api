@@ -27,11 +27,11 @@ public static class UsageEndpoints
         => user.FindFirstValue(ClaimTypes.NameIdentifier)
            ?? throw new InvalidOperationException("Missing NameIdentifier claim for API key.");
 
-     private static async Task<IResult> Increment(
-    ClaimsPrincipal user,
-    IUsageEventQueue queue,
-    HttpContext httpContext,
-    CancellationToken cancellationToken)
+    private static async Task<IResult> Increment(
+        ClaimsPrincipal user,
+        IUsageEventQueue queue,
+        HttpContext httpContext,
+        CancellationToken cancellationToken)
     {
         var apiKey = GetKeyId(user);
 
@@ -53,9 +53,9 @@ public static class UsageEndpoints
         CancellationToken ct)
     {
         var keyId = GetKeyId(user);
-        var today = DateOnly.FromDateTime(DateTime.Now); ;
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
-        var res = await usage.GetTodayAsync(keyId, today, ct);
-        return Results.Ok(res);
+        var usageToday = await usage.GetTodayAsync(keyId, today, ct);
+        return Results.Ok(usageToday);
     }
 }

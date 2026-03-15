@@ -92,11 +92,16 @@ public sealed class UsageEndpointsTests : IClassFixture<ApiFactory>
         req.Headers.Add("X-API-Key", AdminKey);
 
         var res = await _client.SendAsync(req);
+        var raw = await res.Content.ReadAsStringAsync();
+
+        Console.WriteLine($"STATUS: {(int)res.StatusCode}");
+        Console.WriteLine(raw);
+
         res.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var body = await res.Content.ReadFromJsonAsync<UsageTodayResponse>();
-
         body.Should().NotBeNull();
+
         return body!;
     }
 
@@ -122,6 +127,25 @@ public sealed class UsageEndpointsTests : IClassFixture<ApiFactory>
             "the background usage processor should eventually persist queued increments");
 
         return final;
+    }
+
+    [Fact]
+    public async Task When_usage_today_is_requested_on_empty_state_it_returns_zero()
+    {
+        var req = new HttpRequestMessage(HttpMethod.Get, "/secure/usage/today");
+        req.Headers.Add("X-API-Key", AdminKey);
+
+        var res = await _client.SendAsync(req);
+        var raw = await res.Content.ReadAsStringAsync();
+
+        Console.WriteLine($"STATUS: {(int)res.StatusCode}");
+        Console.WriteLine(raw);
+
+        res.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var body = await res.Content.ReadFromJsonAsync<UsageTodayResponse>();
+        body.Should().NotBeNull();
+        body!.Count.Should().BeGreaterThanOrEqualTo(0);
     }
 
     public sealed record UsageTodayResponse(DateOnly UsageDate, int Count);
