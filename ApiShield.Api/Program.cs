@@ -7,6 +7,9 @@ using ApiShield.Core.Usage;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Threading.Channels;
+using ApiShield.Api.Messaging;
+using ApiShield.Api.Infrastructure.Queue;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +65,15 @@ builder.Services.AddDbContext<ApiShieldDbContext>(options =>
     options.EnableSensitiveDataLogging();
     options.LogTo(Console.WriteLine, LogLevel.Information);
 });
+
+builder.Services.AddSingleton(
+    Channel.CreateUnbounded<UsageIncrementRequested>());
+
+builder.Services.AddSingleton<IUsageEventQueue, InMemoryUsageEventQueue>();
+
+builder.Services.AddScoped<IUsageProcessingService, UsageProcessingService>();
+
+builder.Services.AddHostedService<UsageEventsConsumer>();
 
 var app = builder.Build();
 

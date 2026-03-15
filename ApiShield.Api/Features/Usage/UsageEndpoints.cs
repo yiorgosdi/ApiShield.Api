@@ -1,4 +1,5 @@
-﻿using ApiShield.Api.Security.AuthConstants;
+﻿using ApiShield.Api.Messaging;
+using ApiShield.Api.Security.AuthConstants;
 using ApiShield.Core.Usage;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -26,16 +27,24 @@ public static class UsageEndpoints
         => user.FindFirstValue(ClaimTypes.NameIdentifier)
            ?? throw new InvalidOperationException("Missing NameIdentifier claim for API key.");
 
-    private static async Task<IResult> Increment(
-        ClaimsPrincipal user,
-        IApiKeyUsageService usage,
-        CancellationToken ct)
+     private static async Task<IResult> Increment(
+    ClaimsPrincipal user,
+    IUsageEventQueue queue,
+    HttpContext httpContext,
+    CancellationToken cancellationToken)
     {
-        var keyId = GetKeyId(user);
-        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var apiKey = GetKeyId(user);
 
-        var res = await usage.IncrementAsync(keyId, today, ct);
-        return Results.Ok(res);
+        var message = new UsageIncrementRequested(
+            Guid.NewGuid(),
+            apiKey,
+            httpContext.Request.Path,
+            DateTime.UtcNow,
+            httpContext.TraceIdentifier);
+
+        await queue.EnqueueAsync(message, cancellationToken);
+
+        return Results.Accepted();
     }
 
     private static async Task<IResult> Today(
