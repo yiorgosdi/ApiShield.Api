@@ -19,6 +19,8 @@ public sealed class UsageEventsConsumer : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        _logger.LogInformation("UsageEventsConsumer started");
+
         await foreach (var message in _channel.Reader.ReadAllAsync(stoppingToken))
         {
             try
