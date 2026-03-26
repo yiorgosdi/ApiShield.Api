@@ -64,7 +64,7 @@
     <code id="adminKey">1234567890abcdef1234567890abcdef</code>
     <button class="btn copy-btn" onclick="copyKey('adminKey')">Copy Admin Key</button>
 
-    <code id="basicKey">bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</code>
+    <code id="basicKey">valid-api-key-1234567890abcdef</code>
     <button class="btn copy-btn" onclick="copyKey('basicKey')">Copy Basic Key</button>
 
     <script>

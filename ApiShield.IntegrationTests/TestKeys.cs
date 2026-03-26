@@ -6,7 +6,7 @@ public static class TestKeys
 
     // Keys aligned with ApiShield.Api appsettings.Development.json
     public const string AdminKey = "1234567890abcdef1234567890abcdef";
-    public const string BasicKey = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+    public const string BasicKey = "valid-api-key-1234567890abcdef";
 
     // Well-formed but NOT present in config/store
     public const string NotPresentKey = "1234567890abcdef1234567890abcabc";

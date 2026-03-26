@@ -19,8 +19,7 @@ https://apishield-george-hfcsh9hzhjf2c6g6.westeurope-01.azurewebsites.net/swagge
 - CI/CD with GitHub Actions
 - Azure App Service deployment
 
-
-PURPOSE 
+## PURPOSE 
 - ApiShield demonstrates how to build and deploy a secure ASP.NET Core API with:
 - Custom API Key authentication scheme
 - Role-based authorization policies
@@ -52,8 +51,7 @@ curl https://<your-url>/secure/admin -H "X-API-Key: <admin-key>"
 
 Demo API keys are available in appsettings.Development.json.
 
-
-AuthN vs AuthZ BEHAVIOR 
+## AuthN vs AuthZ BEHAVIOR 
 Scenario	Result
 Missing or invalid API key	401 Unauthorized
 Valid key, insufficient role	403 Forbidden
@@ -61,8 +59,7 @@ Valid key, correct role	200 OK
 
 This clearly separates authentication from authorization in the request pipeline.
 
-
-TESTING STRATEGY 
+## TESTING STRATEGY 
 - Unit tests for core validation logic
 - Integration tests using WebApplicationFactory
 - Full authentication pipeline coverage
@@ -72,8 +69,7 @@ TESTING STRATEGY
 dotnet test
 dotnet run --project ApiShield.Api
 
-
-ARCHITECTURE OVERVIEW 
+## ARCHITECTURE OVERVIEW 
 Client > Middleware Pipeline > Custom ApiKey AuthenticationHandler > ClaimsPrincipal > Authorization Policies (Roles) > Controller Endpoints
 
 Design focus:
@@ -82,30 +78,26 @@ Design focus:
 - Environment-based configuration
 - Production-ready middleware ordering
 
-
-CLOUD & DEVOPS 
+## CLOUD & DEVOPS 
 - Azure App Service (Linux)
 - GitHub Actions CI/CD
 - HTTPS enforced
 - OIDC-based deployment authentication
 - Environment-specific configuration handling
 
-
-SECURITY NOTES
+## SECURITY NOTES
 - Demo API keys are for testing purposes only.
 - No secrets are committed to the repository.
 - Production configuration should use secure secret storage (e.g., Azure Key Vault).
 
-
-ROADMAP 
+## ROADMAP 
 - Redis-backed caching
 - Advanced rate limiting policies
 - Structured logging & correlation IDs
 - Azure Application Insights integration
 - Resilience patterns (retry / idempotency) 
 
-
-USAGE TRACKING ENDPOINTS 
+## USAGE TRACKING ENDPOINTS 
 ApiShield includes a usage tracking subsystem that demonstrates how authenticated 
 API calls can produce usage events that are processed asynchronously.
 
@@ -147,3 +139,31 @@ Usage Processing Architecture
 The usage tracking subsystem uses an event-driven pipeline.
 Client > Usage Endpoint > UsageEventQueue > Background Worker > Usage Store
 This design ensures that the API remains responsive while usage events are processed reliably in the background.
+
+
+
+## Testing
+
+The project includes both unit tests and infrastructure-assisted tests.
+
+### ApiKeyValidator
+
+Covers API key validation scenarios:
+
+- Null or whitespace API key → validation failure
+- API key shorter than required length → validation failure
+- Non-existing API key → unauthorized
+- Valid API key → successful validation
+- Boundary case (exact length = 16)
+
+### ApiKeyUsageService (GetTodayAsync)
+
+Tested using EF Core InMemory provider to simulate a controlled data store.
+
+Scenarios covered:
+
+- Existing record → returns correct count
+- Existing record with zero count → returns zero
+- Non-existing record → returns zero
+
+These tests focus on verifying business behavior over controlled state rather than mocking persistence.

@@ -33,6 +33,6 @@ public sealed class CorrelationIdMiddleware
             return values.ToString();
         }
 
-        return Guid.NewGuid().ToString("N");
+        return Guid.NewGuid().ToString("N"); // "N": No dashes (now guid is more compact, cleaner and shorter). 
     }
 }
