@@ -1,16 +1,15 @@
 ﻿using System.Net;
 using ApiShield.IntegrationTests.Helper;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace ApiShield.IntegrationTests;
 
-public sealed class UsageIdempotencyTests : IClassFixture<WebApplicationFactory<Program>>
+public sealed class UsageIdempotencyTests : IClassFixture<ApiFactory>
 {
     private readonly HttpClient _client;
     private const string ApiKey = TestKeys.AdminKey;
 
-    public UsageIdempotencyTests(WebApplicationFactory<Program> factory)
+    public UsageIdempotencyTests(ApiFactory factory)
     {
         _client = factory.CreateClient();
     }
