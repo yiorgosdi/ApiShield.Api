@@ -1,5 +1,5 @@
-﻿using ApiShield.Api.Infrastructure.Persistence;
-using ApiShield.Api.Infrastructure.Usage;
+﻿using ApiShield.Infrastructure.Persistence;
+using ApiShield.Infrastructure.Usage;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,6 +73,16 @@ public class ApiKeyUsageServiceTests
 
         result.Count.Should().Be(0);
         result.UsageDate.Should().Be(date);
+
+
+        var numbers = new List<int> { 1, 2, 3, 4 };
+
+        var query = numbers.Where(x => x > 2);
+
+        numbers.Add(5);
+
+        var result1 = query.ToList();
+
     }
 
     [Fact]
@@ -107,5 +117,10 @@ public class ApiKeyUsageServiceTests
 
         result.Count.Should().Be(0);
         result.UsageDate.Should().Be(date);
+
+
+        string s = "hello";
+        s = s.ToUpper();
+        Console.WriteLine(s);
     }
 }

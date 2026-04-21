@@ -1,20 +1,21 @@
-﻿using ApiShield.Api.Extensions;
-using ApiShield.Api.Features.Usage;
-using ApiShield.Api.Infrastructure.Persistence;
-using ApiShield.Api.Infrastructure.Usage;
+﻿using ApiShield.Api.Endpoints;
+using ApiShield.Api.Extensions;
 using ApiShield.Api.Middleware;
+using ApiShield.Core.Idempotency;
 using ApiShield.Core.Usage;
+using ApiShield.Infrastructure.BackgroundServices;
+using ApiShield.Infrastructure.Persistence;
+using ApiShield.Infrastructure.Queue;
+using ApiShield.Infrastructure.Usage;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Threading.Channels;
-using ApiShield.Api.Messaging;
-using ApiShield.Api.Infrastructure.Queue;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddApiKeyAuth(builder.Configuration);
+builder.Services.AddApiKeyAuth(builder.Configuration);// don't forget this one!
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -33,7 +34,7 @@ builder.Services.AddSwaggerGen(c =>
             new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
-                {
+                  {
                     Type = ReferenceType.SecurityScheme,
                     Id = "ApiKey"
                 }
@@ -75,16 +76,19 @@ builder.Services.AddScoped<IUsageProcessingService, UsageProcessingService>();
 
 builder.Services.AddHostedService<UsageEventsConsumer>();
 
+builder.Services.AddScoped<IApiRequestLogRepository, ApiRequestLogRepository>();
+builder.Services.AddScoped<IIdempotencyService, IdempotencyService>();
+
 var app = builder.Build();
 
-app.UseExceptionHandler(errorApp =>
-{
-    errorApp.Run(async context =>
-    {
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        await context.Response.WriteAsync("Internal Server Error");
-    });
-});
+//app.UseExceptionHandler(errorApp =>
+//{
+//    errorApp.Run(async context =>
+//    {
+//        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+//        await context.Response.WriteAsync("Internal Server Error");
+//    });
+//});
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -117,6 +121,7 @@ app.MapGet("/health/db", async (ApiShieldDbContext db, CancellationToken ct) =>
 });
 
 app.MapControllers();
+app.MapSecureEndpoints();
 app.MapUsageEndpoints();      
 
 app.Run(); 

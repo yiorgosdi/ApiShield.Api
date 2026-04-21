@@ -1,7 +1,7 @@
-﻿using System.Threading.Channels;
-using ApiShield.Api.Messaging;
+﻿using ApiShield.Core.Usage;
+using System.Threading.Channels;
 
-namespace ApiShield.Api.Infrastructure.Queue;
+namespace ApiShield.Infrastructure.Queue;
 
 public sealed class InMemoryUsageEventQueue : IUsageEventQueue
 {

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -23,6 +22,7 @@
     
   <ItemGroup>
     <ProjectReference Include="..\ApiShield.Core\ApiShield.Core.csproj" />
+    <ProjectReference Include="..\ApiShield.Infrastructure\ApiShield.Infrastructure.csproj" />
   </ItemGroup>
     
   <ItemGroup>

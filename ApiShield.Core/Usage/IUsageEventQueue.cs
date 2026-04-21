@@ -1,4 +1,4 @@
-﻿namespace ApiShield.Api.Messaging;
+﻿namespace ApiShield.Core.Usage;
 
 public interface IUsageEventQueue
 {

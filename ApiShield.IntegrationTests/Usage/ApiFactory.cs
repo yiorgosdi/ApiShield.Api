@@ -1,4 +1,4 @@
-﻿using ApiShield.Api.Infrastructure.Persistence;
+﻿using ApiShield.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;

@@ -1,9 +1,9 @@
-﻿using ApiShield.Api.Infrastructure.Persistence;
-using ApiShield.Core.Usage;
+﻿using ApiShield.Core.Usage;
+using ApiShield.Infrastructure.Persistence;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApiShield.Api.Infrastructure.Usage;
+namespace ApiShield.Infrastructure.Usage;
 
 public sealed class ApiKeyUsageService : IApiKeyUsageService
 {

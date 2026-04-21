@@ -1,4 +1,4 @@
-﻿ using ApiShield.Api.Messaging;
+﻿namespace ApiShield.Core.Usage;
 
 public interface IUsageProcessingService
 {

@@ -1,11 +1,12 @@
-﻿namespace ApiShield.Api.Messaging;
+﻿namespace ApiShield.Core.Usage;
 
 public sealed record UsageIncrementRequested(
     Guid EventId,
-    string ApiKey,
+    string ApiKeyId,
     string Route,
     DateTime OccurredAtUtc,
-    string CorrelationId);
+    string CorrelationId,
+    string IdempotencyKey);
 
 /* reminder: 
     field         		reason       

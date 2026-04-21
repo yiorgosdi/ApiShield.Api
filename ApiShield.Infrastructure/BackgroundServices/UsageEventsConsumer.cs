@@ -1,5 +1,10 @@
-﻿using System.Threading.Channels;
-using ApiShield.Api.Messaging;
+﻿using ApiShield.Core.Usage;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.Threading.Channels;
+
+namespace ApiShield.Infrastructure.BackgroundServices;
 
 public sealed class UsageEventsConsumer : BackgroundService
 {
